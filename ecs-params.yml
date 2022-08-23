@@ -1,0 +1,23 @@
+version: 1
+task_definition:
+  task_execution_role: ecsTaskExecutionRole
+  ecs_network_mode: awsvpc
+  task_size:
+    mem_limit: 0.5GB
+    cpu_limit: 256
+  services:
+    django:
+      essential: true
+    nginx:
+      essential: true
+      depends_on:
+        - container_name: django
+          condition: START
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        - "subnet-045f9d27557c622b7"
+      security_groups:
+        - "sg-03a5445e29bcfa5cb"
+      assign_public_ip: ENABLED
